@@ -1,19 +1,59 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Provider as PaperProvider } from "react-native-paper";
+import jwtDecode from "jwt-decode";
 import AuthScreen from "./src/screens/AuthScreen";
 import UserNavigation from "./src/navigation/UserNavigation";
-import { getTokenApi } from "./src/api/token";
+import { getTokenApi, setTokenApi, removeTokenApi } from "./src/api/token";
+import AuthContext from "./src/context/AuthContext";
 
 export default function App() {
   const [auth, setAuth] = useState(null);
 
   useEffect(() => {
     (async () => {
-      setAuth(await getTokenApi());
+      const token = await getTokenApi();
+      if (token) {
+        setAuth({
+          token,
+          idUser: jwtDecode(token).id,
+        });
+      } else {
+        setAuth(null);
+      }
     })();
   }, []);
 
+  const login = (user) => {
+    setTokenApi(user.jwt);
+    setAuth({
+      token: user.jwt,
+      idUser: jwtDecode(user.jwt).id,
+    });
+  };
+
+  const logout = () => {
+    if (auth) {
+      removeTokenApi();
+      setAuth(null);
+      // router.push("/");
+    }
+  };
+
+  const authData = useMemo(
+    () => ({
+      auth,
+      login,
+      logout,
+      setReloadUser: null,
+    }),
+    [auth]
+  );
+
   return (
-    <PaperProvider>{auth ? <UserNavigation /> : <AuthScreen />}</PaperProvider>
+    <AuthContext.Provider value={authData}>
+      <PaperProvider>
+        {auth ? <UserNavigation /> : <AuthScreen />}
+      </PaperProvider>
+    </AuthContext.Provider>
   );
 }

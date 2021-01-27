@@ -3,22 +3,11 @@ import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import AwesomeIcon from "react-native-vector-icons/FontAwesome";
-
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Home!</Text>
-    </View>
-  );
-}
-
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
+import colors from "../styles/colors";
+import HomeScreen from "../screens/Home";
+import FavoritesScreen from "../screens/Favorites";
+import CartScreen from "../screens/Cart";
+import AccountStack from "./AccountStack";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -31,28 +20,68 @@ export default function UserNavigation() {
           tabBarIcon: (routeStatus) => {
             return setIcon(route, routeStatus);
           },
-          title: "",
         })}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Favorites" component={SettingsScreen} />
-        <Tab.Screen name="Cart" component={SettingsScreen} />
-        <Tab.Screen name="User" component={SettingsScreen} />
+        <Tab.Screen
+          name="home"
+          component={HomeScreen}
+          options={{
+            title: "Inicio",
+          }}
+        />
+        <Tab.Screen
+          name="favorites"
+          component={FavoritesScreen}
+          options={{
+            title: "Favoritos",
+          }}
+        />
+        <Tab.Screen
+          name="cart"
+          component={CartScreen}
+          options={{
+            title: "Carrito",
+          }}
+        />
+        <Tab.Screen
+          name="account"
+          component={AccountStack}
+          options={{
+            title: "Mi cuenta",
+          }}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );
 }
 
 function setIcon(route, routeStatus) {
-  return <AwesomeIcon name="camera" style={styles.icon} />;
+  let iconName = "";
+  switch (route.name) {
+    case "home":
+      iconName = "home";
+      break;
+    case "favorites":
+      iconName = "heart";
+      break;
+    case "cart":
+      iconName = "shopping-cart";
+      break;
+    case "account":
+      iconName = "bars";
+      break;
+    default:
+      break;
+  }
+  return <AwesomeIcon name={iconName} style={[styles.icon]} />;
 }
 
 const styles = StyleSheet.create({
   navigation: {
-    backgroundColor: "#000",
+    backgroundColor: colors.bgDark,
   },
   icon: {
-    top: 10,
     fontSize: 20,
+    color: colors.fontLight,
   },
 });

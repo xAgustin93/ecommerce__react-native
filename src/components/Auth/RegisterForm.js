@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import Toast from "react-native-root-toast";
 import { registerApi } from "../../api/user";
 import { formStyle } from "../../styles";
 
 export default function RegisterForm(props) {
   const { setShowLogin } = props;
+  const [loading, setLoading] = useState(false);
 
   const showLogin = () => setShowLogin((prevState) => !prevState);
 
@@ -15,11 +17,15 @@ export default function RegisterForm(props) {
     initialValues: initialValues(),
     validationSchema: Yup.object(validationSchema()),
     onSubmit: async (formData) => {
+      setLoading(true);
       try {
         await registerApi(formData);
-        console.log("OK");
+        showLogin();
       } catch (error) {
-        console.log(error);
+        Toast.show("Error al registrar el usuario", {
+          position: Toast.positions.CENTER,
+        });
+        setLoading(false);
       }
     },
   });
@@ -32,6 +38,13 @@ export default function RegisterForm(props) {
         onChangeText={(text) => formik.setFieldValue("email", text)}
         value={formik.values.email}
         error={formik.errors.email}
+      />
+      <TextInput
+        label="Nombre de usuario"
+        style={formStyle.input}
+        onChangeText={(text) => formik.setFieldValue("username", text)}
+        value={formik.values.username}
+        error={formik.errors.username}
       />
       <TextInput
         label="Contraseña"
@@ -53,6 +66,7 @@ export default function RegisterForm(props) {
         mode="contained"
         style={formStyle.btnSucces}
         onPress={formik.handleSubmit}
+        loading={loading}
       >
         Registrarse
       </Button>
@@ -71,6 +85,7 @@ export default function RegisterForm(props) {
 function initialValues() {
   return {
     email: "",
+    username: "",
     password: "",
     repeatPassword: "",
   };
@@ -79,6 +94,7 @@ function initialValues() {
 function validationSchema() {
   return {
     email: Yup.string().email().required(true),
+    username: Yup.string().required(true),
     password: Yup.string().required(true),
     repeatPassword: Yup.string()
       .required(true)

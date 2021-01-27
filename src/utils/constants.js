@@ -1,1 +1,2 @@
-export const API_URL = "http://localhost:1337";
+export const API_URL = "http://192.168.2.231:1337";
+export const TOKEN = "token";
