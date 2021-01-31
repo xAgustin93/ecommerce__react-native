@@ -7,7 +7,7 @@ import { getTokenApi, setTokenApi, removeTokenApi } from "./src/api/token";
 import AuthContext from "./src/context/AuthContext";
 
 export default function App() {
-  const [auth, setAuth] = useState(null);
+  const [auth, setAuth] = useState(undefined);
 
   useEffect(() => {
     (async () => {
@@ -35,7 +35,6 @@ export default function App() {
     if (auth) {
       removeTokenApi();
       setAuth(null);
-      // router.push("/");
     }
   };
 
@@ -48,6 +47,8 @@ export default function App() {
     }),
     [auth]
   );
+
+  if (auth === undefined) return null;
 
   return (
     <AuthContext.Provider value={authData}>

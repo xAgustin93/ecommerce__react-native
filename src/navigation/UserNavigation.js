@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import AwesomeIcon from "react-native-vector-icons/FontAwesome";
 import colors from "../styles/colors";
-import HomeScreen from "../screens/Home";
+import ProductStack from "./ProductStack";
 import FavoritesScreen from "../screens/Favorites";
 import CartScreen from "../screens/Cart";
 import AccountStack from "./AccountStack";
@@ -24,7 +24,7 @@ export default function UserNavigation() {
       >
         <Tab.Screen
           name="home"
-          component={HomeScreen}
+          component={ProductStack}
           options={{
             title: "Inicio",
           }}

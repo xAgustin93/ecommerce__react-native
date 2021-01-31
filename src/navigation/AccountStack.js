@@ -15,6 +15,9 @@ export default function AccountStack() {
       screenOptions={{
         headerTintColor: colors.fontLight,
         headerStyle: { backgroundColor: colors.bgDark },
+        cardStyle: {
+          backgroundColor: "#fff",
+        },
       }}
     >
       <Stack.Screen
