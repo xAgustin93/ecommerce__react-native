@@ -1,7 +1,9 @@
 import React from "react";
-import { Text } from "react-native";
+import { ScrollView } from "react-native";
 import StatusBar from "../../components/StatusBar";
 import Search from "../../components/Search";
+import Banners from "../../components/Home/Banners";
+import NewProducts from "../../components/Home/NewProducts";
 import colors from "../../styles/colors";
 
 export default function Home() {
@@ -9,7 +11,10 @@ export default function Home() {
     <>
       <StatusBar backgroundColor={colors.bgDark} barStyle="light-content" />
       <Search />
-      <Text>HOME</Text>
+      <ScrollView>
+        <Banners />
+        <NewProducts />
+      </ScrollView>
     </>
   );
 }

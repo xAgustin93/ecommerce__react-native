@@ -41,7 +41,7 @@ export default function Product(props) {
           <CarouselImages images={images} />
           <Price price={product.price} discount={product.discount} />
           <Quantity quantity={quantity} setQuantity={setQuantity} />
-          <Buy product={product} />
+          <Buy product={product} quantity={quantity} />
           <Favorite product={product} />
         </ScrollView>
       )}

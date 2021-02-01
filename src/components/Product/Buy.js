@@ -1,11 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, View } from "react-native";
+import React from "react";
+import { StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
-import useAuth from "../../hooks/useAuth";
+import Toast from "react-native-root-toast";
+import { addProductCartApi } from "../../api/cart";
 
 export default function Actions(props) {
-  const { product } = props;
-  const { auth } = useAuth();
+  const { product, quantity } = props;
+
+  const addProductCart = async () => {
+    const response = await addProductCartApi(product._id, quantity);
+    if (response) {
+      Toast.show("Producto añadido al carrito", {
+        position: Toast.positions.CENTER,
+      });
+    } else {
+      Toast.show("ERROR al añadir el producto al carrito", {
+        position: Toast.positions.CENTER,
+      });
+    }
+  };
 
   return (
     <Button
@@ -13,6 +26,7 @@ export default function Actions(props) {
       contentStyle={styles.btnBuyContent}
       labelStyle={styles.btnLabel}
       style={styles.btn}
+      onPress={addProductCart}
     >
       Añadir a la cesta
     </Button>

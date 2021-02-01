@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { size } from "lodash";

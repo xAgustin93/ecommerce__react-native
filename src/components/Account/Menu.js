@@ -64,7 +64,7 @@ export default function Menu() {
           title="Lista de deseos"
           description="Listado de todos los productos que te quieres comprar"
           left={(props) => <List.Icon {...props} icon="heart" />}
-          onPress={() => console.log("ee")}
+          onPress={() => navigation.navigate("favorites")}
         />
         <List.Item
           title="Cerrar sesión"
