@@ -9,19 +9,28 @@ import {
 import { useFocusEffect } from "@react-navigation/native";
 import { size } from "lodash";
 import StatusBar from "../components/StatusBar";
+import NotProducts from "../components/Cart/NotProducts";
 import FinishPurchase from "../components/Cart/FinishPurchase";
 import ProductList from "../components/Cart/ProductList";
+import AddressList from "../components/Cart/AddressList";
 import { getProductCartApi } from "../api/cart";
+import { getAddressesApi } from "../api/address";
+import useAuth from "../hooks/useAuth";
 import colors from "../styles/colors";
 
 export default function Cart() {
   const [cart, setCart] = useState(null);
+  const [addresses, setAddresses] = useState(null);
   const [reloadCart, setReloadCart] = useState(false);
+  const [totalPayment, setTotalPayment] = useState(null);
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const { auth } = useAuth();
 
   useFocusEffect(
     useCallback(() => {
       setCart(null);
       loadCart();
+      loadAddresses();
     }, [])
   );
 
@@ -34,18 +43,30 @@ export default function Cart() {
     setCart(response);
   };
 
+  const loadAddresses = async () => {
+    const response = await getAddressesApi(auth);
+    setAddresses(response);
+  };
+
   return (
     <>
       <StatusBar backgroundColor={colors.bgDark} barStyle="light-content" />
-      {!cart || size(cart === 0) ? (
-        <View>
-          <Text>No tienes productos en el carrito</Text>
-        </View>
+      {!cart || size(cart) === 0 ? (
+        <NotProducts />
       ) : (
         <>
-          <FinishPurchase />
+          <FinishPurchase totalPayment={totalPayment} />
           <ScrollView style={styles.cartContainer}>
-            <ProductList cart={cart} setReloadCart={setReloadCart} />
+            <ProductList
+              cart={cart}
+              setReloadCart={setReloadCart}
+              setTotalPayment={setTotalPayment}
+            />
+            <AddressList
+              addresses={addresses}
+              selectedAddress={selectedAddress}
+              setSelectedAddress={setSelectedAddress}
+            />
           </ScrollView>
           {reloadCart && (
             <View style={styles.reload}>

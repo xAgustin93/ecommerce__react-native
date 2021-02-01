@@ -1,29 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { map } from "lodash";
 import ScreenLoading from "../ScreenLoading";
 import Product from "./Product";
 import { getProductApi } from "../../api/product";
 
 export default function ProductList(props) {
-  const { cart, setReloadCart } = props;
+  const { cart, setReloadCart, setTotalPayment } = props;
   const [products, setProducts] = useState(null);
 
   useEffect(() => {
     (async () => {
       const productTemp = [];
+      let totalPaymentTemp = 0;
       for await (const product of cart) {
         const response = await getProductApi(product.idProduct);
         response.quantity = product.quantity;
         productTemp.push(response);
+
+        totalPaymentTemp += response.price * product.quantity;
       }
       setProducts(productTemp);
+      setTotalPayment(totalPaymentTemp.toFixed(2));
       setReloadCart(false);
     })();
   }, [cart]);
 
   return (
     <View>
+      <Text style={styles.title}>Productos:</Text>
       {!products ? (
         <ScreenLoading text="Cargando carrito" size="large" />
       ) : (
@@ -38,3 +43,11 @@ export default function ProductList(props) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  title: {
+    paddingTop: 20,
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+});

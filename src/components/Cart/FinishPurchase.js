@@ -1,10 +1,11 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Button } from "react-native-paper";
+import { forEach } from "lodash";
 import colors from "../../styles/colors";
 
 export default function FinishPurchase(props) {
-  const {} = props;
+  const { totalPayment } = props;
 
   return (
     <View style={styles.container}>
@@ -13,7 +14,7 @@ export default function FinishPurchase(props) {
         contentStyle={styles.btnContent}
         labelStyle={styles.btnText}
       >
-        Comprar ahora
+        Pagar {totalPayment && `(${totalPayment} €)`}
       </Button>
     </View>
   );

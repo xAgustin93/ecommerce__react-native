@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
+  View,
   Image,
   Dimensions,
   TouchableWithoutFeedback,
@@ -42,7 +43,7 @@ export default function Banners() {
   };
 
   return (
-    <>
+    <View style={styles.container}>
       <Carousel
         layout={"default"}
         data={banners}
@@ -60,18 +61,21 @@ export default function Banners() {
         dotStyle={styles.dot}
         inactiveDotStyle={styles.dot}
       />
-    </>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    position: "relative",
+  },
   carousel: {
     width,
     height,
   },
   dotsContainer: {
     position: "absolute",
-    bottom: -5,
+    bottom: -20,
     width: "100%",
   },
   dot: {
