@@ -16,6 +16,7 @@
     "@react-navigation/stack": "^5.13.0",
     "expo": "~40.0.0",
     "expo-linear-gradient": "^8.4.0",
+    "expo-payments-stripe": "~8.4.0",
     "expo-status-bar": "~1.0.3",
     "formik": "^2.2.6",
     "jwt-decode": "^3.1.2",
@@ -33,6 +34,7 @@
     "react-native-snap-carousel": "^3.9.1",
     "react-native-vector-icons": "^7.1.0",
     "react-native-web": "~0.13.12",
+    "stripe-client": "^1.1.5",
     "yup": "^0.32.8"
   },
   "devDependencies": {

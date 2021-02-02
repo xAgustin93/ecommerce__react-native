@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { map } from "lodash";
 import ScreenLoading from "../ScreenLoading";
@@ -6,8 +6,7 @@ import Product from "./Product";
 import { getProductApi } from "../../api/product";
 
 export default function ProductList(props) {
-  const { cart, setReloadCart, setTotalPayment } = props;
-  const [products, setProducts] = useState(null);
+  const { cart, products, setProducts, setReloadCart, setTotalPayment } = props;
 
   useEffect(() => {
     (async () => {
@@ -46,7 +45,6 @@ export default function ProductList(props) {
 
 const styles = StyleSheet.create({
   title: {
-    paddingTop: 20,
     fontSize: 18,
     fontWeight: "bold",
   },

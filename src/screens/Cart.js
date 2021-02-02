@@ -8,11 +8,12 @@ import {
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { size } from "lodash";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import StatusBar from "../components/StatusBar";
 import NotProducts from "../components/Cart/NotProducts";
-import FinishPurchase from "../components/Cart/FinishPurchase";
 import ProductList from "../components/Cart/ProductList";
 import AddressList from "../components/Cart/AddressList";
+import Payment from "../components/Cart/Payment";
 import { getProductCartApi } from "../api/cart";
 import { getAddressesApi } from "../api/address";
 import useAuth from "../hooks/useAuth";
@@ -20,6 +21,7 @@ import colors from "../styles/colors";
 
 export default function Cart() {
   const [cart, setCart] = useState(null);
+  const [products, setProducts] = useState(null);
   const [addresses, setAddresses] = useState(null);
   const [reloadCart, setReloadCart] = useState(false);
   const [totalPayment, setTotalPayment] = useState(null);
@@ -54,11 +56,12 @@ export default function Cart() {
       {!cart || size(cart) === 0 ? (
         <NotProducts />
       ) : (
-        <>
-          <FinishPurchase totalPayment={totalPayment} />
+        <KeyboardAwareScrollView extraScrollHeight={25}>
           <ScrollView style={styles.cartContainer}>
             <ProductList
               cart={cart}
+              products={products}
+              setProducts={setProducts}
               setReloadCart={setReloadCart}
               setTotalPayment={setTotalPayment}
             />
@@ -67,6 +70,11 @@ export default function Cart() {
               selectedAddress={selectedAddress}
               setSelectedAddress={setSelectedAddress}
             />
+            <Payment
+              totalPayment={totalPayment}
+              selectedAddress={selectedAddress}
+              products={products}
+            />
           </ScrollView>
           {reloadCart && (
             <View style={styles.reload}>
@@ -74,7 +82,7 @@ export default function Cart() {
               <Text style={styles.reloadText}>Cargando...</Text>
             </View>
           )}
-        </>
+        </KeyboardAwareScrollView>
       )}
     </>
   );

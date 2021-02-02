@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View, Text, TouchableWithoutFeedback } from "react-native";
 import { map } from "lodash";
 import colors from "../../styles/colors";
 
 export default function AddressList(props) {
   const { addresses, selectedAddress, setSelectedAddress } = props;
+
+  useEffect(() => {
+    addresses && setSelectedAddress(addresses[0]);
+  }, []);
 
   return (
     <View style={styles.container}>
