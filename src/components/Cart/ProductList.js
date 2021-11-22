@@ -8,6 +8,13 @@ import { getProductApi } from "../../api/product";
 export default function ProductList(props) {
   const { cart, products, setProducts, setReloadCart, setTotalPayment } = props;
 
+  const calcPrice = (price, discount) => {
+    if (!discount) return price;
+
+    const discountAmount = (price * discount) / 100;
+    return (price - discountAmount).toFixed(2);
+  };
+
   useEffect(() => {
     (async () => {
       const productTemp = [];
@@ -17,7 +24,9 @@ export default function ProductList(props) {
         response.quantity = product.quantity;
         productTemp.push(response);
 
-        totalPaymentTemp += response.price * product.quantity;
+        const priceProduct = calcPrice(response.price, response.discount);
+
+        totalPaymentTemp += priceProduct * product.quantity;
       }
       setProducts(productTemp);
       setTotalPayment(totalPaymentTemp.toFixed(2));
